@@ -7,7 +7,7 @@ The Arduino sketch enables the user to play notes via a serial console.
   
 Please note that if you use the Serial Monitor in the Arduino IDE you have to press Send after each key. I recommend using a Terminal Emulator program, which enables the user to play notes like a piano.
 
-![keymap](https://github.com/JeffreyLevine/Arduinophone/blob/master/keymap.png)  
+![keymap](https://github.com/JeffreyLevine/Arduinophone/blob/master/Docs/keymap.png)  
 the red letters are playable notes
 
 ### Play_Song.py

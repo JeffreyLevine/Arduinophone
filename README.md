@@ -1,6 +1,6 @@
 # Arduinophone
-
-For code to play tunes on the [Arduinophone](https://www.youtube.com/watch?time_continue=1&v=WLKqLVUCKDU)
+Arduino Powered Robotic Bell Playing Doorbell  
+For code to play tunes on the [Arduinophone](https://www.youtube.com/watch?time_continue=1&v=WLKqLVUCKDU)  
 
 ### Sketch
 The Arduino sketch enables the user to play notes via a serial console.  
@@ -26,3 +26,5 @@ Notes in order: LC D E F G A B HC
 "NNN" end, stop playing and release servo and stepper  
   
 :Second line is comma separated delays (in seconds)  
+
+This is forms a 2 line CSV file

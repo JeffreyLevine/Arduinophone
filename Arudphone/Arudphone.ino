@@ -16,6 +16,7 @@ int pause_base = 350; //this is used to slow the position change
 //starting position, top dead center
 int pos = 90;
 int current_note = 4;  //G
+bool playing = false;
 
 //movement matrix
 int pos_displace[8][8] ={
@@ -33,7 +34,7 @@ int pos_displace[8][8] ={
 
 void setup() {
   Serial.begin(9600);
-  Serial.println("Press Start");
+  Serial.println("-=Arduinophone=-");
   
   pinMode(13, OUTPUT);
 }
@@ -135,44 +136,49 @@ void serialEvent() {
 }
 
 void go (int to, int mode) {
-  digitalWrite(13, HIGH);
-  if (to != current_note) {
-    int inc = pos_displace[to][current_note];
-    int next = pos + inc;
-    int by = (inc >= 0 ? 1 : -1);
-    int pause = pause_base / abs(inc);
-    for (pos; pos != next; pos += by) {
-      myservo.write(pos);
-      delay(pause); //takes less time per itteration on longer jumps
+  if (playing) { //only move if started
+    digitalWrite(13, HIGH);
+    
+    if (to != current_note) {
+      int inc = pos_displace[to][current_note];
+      int next = pos + inc;
+      int by = (inc >= 0 ? 1 : -1);
+      int pause = pause_base / abs(inc);
+      for (pos; pos != next; pos += by) {
+        myservo.write(pos);
+        delay(pause); //takes less time per itteration on longer jumps
+      }
+      delay(15);
+      current_note = to;
     }
-    delay(15);
-    current_note = to;
-  }
 
-  switch (mode) {
-    case 1: //normal
-      motor.step(5, FORWARD, DOUBLE);
-      motor.step(5, BACKWARD, DOUBLE);
-      break;
-    case 2: //flat
-      motor.step(5, FORWARD, DOUBLE);
-      delay(flat_wait); //keeps hammer on the bell
-      motor.step(5, BACKWARD, DOUBLE);
-      break;
-    case 3: //double
-      motor.step(5, FORWARD, DOUBLE);
-      motor.step(5, BACKWARD, DOUBLE);
-      delay(doub_wait);
-      motor.step(5, FORWARD, DOUBLE);
-      motor.step(5, BACKWARD, DOUBLE);
-      break;
-  }
+    switch (mode) {
+      case 1: //normal
+        motor.step(5, FORWARD, DOUBLE);
+        motor.step(5, BACKWARD, DOUBLE);
+        break;
+      case 2: //flat
+        motor.step(5, FORWARD, DOUBLE);
+        delay(flat_wait); //keeps hammer on the bell
+        motor.step(5, BACKWARD, DOUBLE);
+        break;
+      case 3: //double
+        motor.step(5, FORWARD, DOUBLE);
+        motor.step(5, BACKWARD, DOUBLE);
+        delay(doub_wait);
+        motor.step(5, FORWARD, DOUBLE);
+        motor.step(5, BACKWARD, DOUBLE);
+        break;
+    }
   
-  delay(user_wait); //used to slow if user holds down a key
-  digitalWrite(13, LOW);
+    delay(user_wait); //used to slow if user holds down a key
+    digitalWrite(13, LOW);
+  }
 }
 
 void ending() {
+  playing = false;
+  
   //move back
   motor.step(4, BACKWARD, DOUBLE);
   delay(200);
@@ -198,6 +204,8 @@ void ending() {
 }
 
 void start() {
+  playing = true;
+  
   myservo.attach(9);
 
   motor.setSpeed(100);

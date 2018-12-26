@@ -177,50 +177,54 @@ void go (int to, int mode) {
 }
 
 void ending() {
-  playing = false;
+  if (playing) { //only stop if playing
+    playing = false;
+    
+    //move back
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(3, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(3, BACKWARD, DOUBLE);
+    delay(200);
   
-  //move back
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(3, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(3, BACKWARD, DOUBLE);
-  delay(200);
+    //disengauge motor and servo
+    motor.release();
+    myservo.write(90);
+    delay(200);
+    myservo.detach();
   
-  //disengauge motor and servo
-  motor.release();
-  myservo.write(90);
-  delay(200);
-  myservo.detach();
-
-  pos = 90;
-  current_note = 4;  //G
-
-  Serial.println("Stop Playing");
+    pos = 90;
+    current_note = 4;  //G
+  
+    Serial.println("Stop Playing");
+  }
 }
 
 void start() {
-  playing = true;
+  if (!playing) { //only play is stopped
+    playing = true;
+    
+    myservo.attach(9);
   
-  myservo.attach(9);
-
-  motor.setSpeed(100);
-
-  motor.step(3, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(3, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-
-  Serial.println("Start Playing");
+    motor.setSpeed(100);
+  
+    motor.step(3, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(3, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
+  
+    Serial.println("Start Playing");
+  }
 }
 

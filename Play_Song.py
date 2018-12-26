@@ -10,6 +10,7 @@ import serial, sys, time
 # "***" start
 # "NNN" end, stop playing and release servo and stepper
 #second line is comma separated delays (in seconds)
+#this forms a 2 line CSV file
 
 #note to keyboard dictonary
 noteverter = {
@@ -42,7 +43,7 @@ noteverter = {
 }
 
 #defaults
-file_folder = "/media/pi/38BD-CCB0/Projects/Web Bells/"
+file_folder = "" #leaving this empty uses current folder
 serial_port = "/dev/ttyACM0"
 
 #read args
@@ -75,7 +76,7 @@ if len(notes) != len(delays):
 
 #close file
 song.close()
-Print "Closed file"
+print "Closed file"
 
 #just for debugging
 #print notes
@@ -96,5 +97,5 @@ for i in range(len(notes)):
 	ser.write(val) #get value from dict and send
 	
 	time.sleep(float(delays[i])) #wait
-time.sleep(1)
+time.sleep(1) #allow travel arm and striker to settle
 print "Done playing song"

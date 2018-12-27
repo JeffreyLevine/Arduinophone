@@ -1,5 +1,4 @@
-//recieves single character commands via serial port
-//commands servo and stepper motors to play bells
+//test the Arduinophone object
 
 #include "Arduinophone.h"
 
@@ -14,7 +13,7 @@ void loop() {
   //nothing needed here
 }
 
-void serialEvent() {
+void serialEvent() { //used to call object play method
   char inChar = (char)Serial.read();
   switch(inChar) {
     //NORMAL
@@ -93,9 +92,9 @@ void serialEvent() {
       Serial.println("double high C");
       music.play(7, 3); break; 
     case '1': //stop playing
-      music.stop(); break;
+      music.stop(); break; //more Arduino-like
     case '0': //start
-      music.begin(); break;
+      music.begin(); break; //more Arduino-like
   }
 
   //clear any keypresses received while moving

@@ -10,7 +10,7 @@ AF_Stepper motor(48, 1);
 //change striker timing here
 int doub_wait = 1; //between strikes
 int flat_wait = 150; //holds striker to bell
-int user_wait = 100; //between keypresses
+int user_wait = 100; //between keypresses, there is a 50ms delay caused by the host OS (200kps)
 int pause_base = 350; //this is used to slow the position change
 
 //starting position, top dead center
@@ -169,6 +169,7 @@ void go (int to, int mode) {
         motor.step(5, FORWARD, DOUBLE);
         motor.step(5, BACKWARD, DOUBLE);
         break;
+      //could add another mode to varry the stepper motor speed
     }
   
     delay(user_wait); //used to slow if user holds down a key
@@ -211,7 +212,7 @@ void start() {
     
     myservo.attach(9);
   
-    motor.setSpeed(100);
+    motor.setSpeed(100); //increasing this will strike bell harder
   
     motor.step(3, FORWARD, DOUBLE);
     delay(200);

@@ -1,41 +1,27 @@
 #include "Arduinophone.h"
 
-Arduinophone::Arduinophone () {
-  //Constructor
-  pinMode(13, OUTPUT);
-    pos_displace[8][8] = {
-  //~140  125   115   100   90    70    55    45
-  // lc    d     e     f     g     a     b     hc   from
-     0,   15,   25,   40,   52,   70,   85,   87, // lc    to
-   -15,    0,   14,   26,   40,   50,   70,   80, // d
-   -25,  -15,    0,   12,   25,   40,   50,   65, // e
-   -40,  -25,  -12,    0,   13,   25,   40,   45, // f
-   -59,  -40,  -25,  -15,    0,   15,   25,   42, // g
-   -70,  -50,  -40,  -25,  -15,    0,   15,   20, // a
-   -85,  -75,  -50,  -40,  -25,  -15,    0,   10, // b
-   -88,  -81,  -70,  -45,  -35,  -20,  -10,    0  // hc
-  };
+Arduinophone::Arduinophone () { //Constructor
+  pinMode(13, OUTPUT); //used for test light
 
-  motor = new AF_Stepper(48, 1);
+  motor = AF_Stepper(48, 1); //set stepper
 }
 
 void Arduinophone::play(int to, int mode) {
   if (playing) { //only move if started
-    digitalWrite(13, HIGH);
+    digitalWrite(13, HIGH); //test light
     
-    if (to != current_note) {
-      int inc = pos_displace[to][current_note];
-      int next = pos + inc;
+    if (to != current_note) { //travel arm
+      int next = pos + pos_displace[to][current_note];
 
-      myservo.write(next);
-      pos = next;
+      myservo.write(next); //jump directly to destination
+      pos = next; //servo
       
-      current_note = to;
+      current_note = to; //note
     }
 
-    delay(250);
+    delay(250); //wait for travel arm
 
-    switch (mode) {
+    switch (mode) { //striker
       case 1: //normal
         motor.step(5, FORWARD, DOUBLE);
         motor.step(5, BACKWARD, DOUBLE);
@@ -56,53 +42,58 @@ void Arduinophone::play(int to, int mode) {
 
     digitalWrite(13, LOW);
   }
-}
+} //4 notes a second max
 
 void Arduinophone::stop() {
-  playing = false;
+  if (playing) { //only stop if started
+    playing = false;
+    
+    //move striker back down to rail
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(4, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(3, BACKWARD, DOUBLE);
+    delay(200);
+    motor.step(3, BACKWARD, DOUBLE);
+    delay(200);
+    
+    //disable motor and servo
+    motor.release();
+    myservo.write(90);
+    delay(200); //make sure travel arm is centered
+    myservo.detach();
   
-  //move back
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(4, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(3, BACKWARD, DOUBLE);
-  delay(200);
-  motor.step(3, BACKWARD, DOUBLE);
-  delay(200);
+    pos = 90;
+    current_note = 4;  //G
   
-  //disengauge motor and servo
-  motor.release();
-  myservo.write(90);
-  delay(200);
-  myservo.detach();
-
-  pos = 90;
-  current_note = 4;  //G
-
-  Serial.println("Stop Playing");
+    Serial.println("Stop Playing");
+  }
 }
 
 void Arduinophone::begin() {
-  playing = true;
+  if (!playing) { //only start if stopped
+    playing = true;
+
+    //enable motor and servo
+    myservo.attach(9);
+    motor.setSpeed(100);
+
+    //move striker into position
+    motor.step(3, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(3, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
+    motor.step(4, FORWARD, DOUBLE);
+    delay(200);
   
-  myservo.attach(9);
-
-  motor.setSpeed(100);
-
-  motor.step(3, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(3, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-  motor.step(4, FORWARD, DOUBLE);
-  delay(200);
-
-  Serial.println("Start Playing");
+    Serial.println("Start Playing");
+  }
 }
 

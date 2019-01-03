@@ -1,7 +1,7 @@
 //Arduinophone Library
 
 #include <Arduino.h>
-#include "AFMotor.h" #this is the old Adafruit library
+#include "AFMotor.h" #Please use version included here
 #include <Servo.h>
 
 #ifndef _Arduinophone_h_
@@ -19,7 +19,7 @@ public:
   
 private:
   Servo myservo; //travel arm
-  AF_Stepper motor; //striker
+  AF_Stepper motor; //striker, uses new zero arg constructor
 
   //change striker timing here
   int doub_wait = 1; //between strikes

@@ -27,4 +27,11 @@ Notes in order: LC D E F G A B HC
   
 :Second line is comma separated delays (in seconds)  
 
-This is forms a 2 line CSV file
+This forms a 2 line CSV file  
+
+## Methods  
+### begin()  
+
+### stop()  
+
+### play()  

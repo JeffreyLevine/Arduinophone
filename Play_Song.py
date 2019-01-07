@@ -91,11 +91,10 @@ except:
 
 #send
 print "Sending song"
-for i in range(len(notes)):
-	print notes[i]
-	val = noteverter[notes[i]]
+for note in notes):
+	print note
+	val = noteverter[note]
 	ser.write(val) #get value from dict and send
-	
 	time.sleep(float(delays[i])) #wait
 time.sleep(1) #allow travel arm and striker to settle
 print "Done playing song"

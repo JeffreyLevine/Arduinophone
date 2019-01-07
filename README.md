@@ -1,4 +1,7 @@
 # Arduinophone
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/f639db9d41ae4e6ea3bf2a38f8324d2a)](https://app.codacy.com/app/clindsa1/Arduinophone?utm_source=github.com&utm_medium=referral&utm_content=JeffreyLevine/Arduinophone&utm_campaign=Badge_Grade_Dashboard)
+
 Arduino Powered Robotic Bell Playing Doorbell  
 For code to play tunes on the [Arduinophone](https://www.youtube.com/watch?time_continue=1&v=WLKqLVUCKDU)  
 

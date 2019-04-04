@@ -91,7 +91,7 @@ except:
 
 #send
 print "Sending song"
-for note in notes):
+for note in notes: #every word in string
 	print note
 	val = noteverter[note]
 	ser.write(val) #get value from dict and send
